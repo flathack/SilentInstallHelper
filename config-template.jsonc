@@ -1,0 +1,71 @@
+// Anleitung:
+// 1. Diese Datei als Vorlage verwenden und Werte anpassen.
+// 2. Wenn du sie produktiv nutzen willst, speichere sie ohne Kommentare als .json
+//    oder entferne vor dem Einsatz alle Kommentarzeilen.
+// 3. "installer" ist die Hauptdatei, auf die sich {installer}, {installer_dir}
+//    und {installer_name} beziehen.
+// 4. Unter "variables" kannst du eigene Platzhalter definieren.
+// 5. In jedem Schritt ist "command" Pflicht.
+// 6. "estimated_duration" ist nur fuer den Ladebalken.
+// 7. "timeout" ist ein echter Abbruch nach X Sekunden.
+// 8. Moegliche Modi: BASIC, FULL, SILENT
+// 9. Moegliche Themes: LIGHT, DARK, HELL, DUNKEL
+//
+{
+  "title": "SilentInstallHelper Template",
+  "mode": "BASIC",
+  "theme": "LIGHT",
+  "progress_color": "#1F7AE0",
+
+  "installer": ".\\readme.md",
+
+  // Eigene frei definierbare Variablen
+  "variables": {
+    "target_dir": "C:\\Temp\\App",
+    "install_args": "/quiet /norestart"
+  },
+
+  "steps": [
+    {
+      "id": "prepare",
+      "label": "Wir bereiten die Installation vor",
+
+      // Feste eingebaute Variablen:
+      // {installer}      = voller Pfad zur Installer-Datei
+      // {installer_dir}  = Ordner der Installer-Datei
+      // {installer_name} = Dateiname der Installer-Datei
+      // {log_path}       = voller Pfad zur Logdatei
+
+      // Beispiel mit festen Variablen:
+      // "command": "cmd /c echo {installer}",
+      // "command": "cmd /c echo {installer_dir}",
+      // "command": "cmd /c echo {installer_name}",
+      // "command": "cmd /c echo {log_path}",
+
+      // Beispiel mit eigenen Variablen:
+      // "command": "cmd /c echo {target_dir} {install_args}",
+
+      "command": "cmd /c echo Vorbereiten von {installer_name} && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+
+      // Optional:
+      // "timeout": 300,
+      // "working_directory": "C:\\Temp",
+      // "success_codes": [0],
+      // "optional": false,
+      // "continue_on_error": false
+    },
+    {
+      "id": "install",
+      "label": "Die Software wird installiert",
+      "command": "cmd /c echo Demo-Installation mit {installer_name} {install_args} && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+    },
+    {
+      "id": "cleanup",
+      "label": "Wir raeumen auf",
+      "command": "cmd /c echo Cleanup abgeschlossen && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+    }
+  ]
+}

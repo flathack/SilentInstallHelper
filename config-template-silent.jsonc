@@ -1,0 +1,45 @@
+// Anleitung:
+// 1. Dieses Template ist fuer den SILENT-Modus gedacht.
+// 2. SILENT bedeutet: kein sichtbares Fenster.
+// 3. Passe zuerst "installer" und optional "variables" an.
+// 4. Dieser Modus eignet sich fuer automatische oder unbeaufsichtigte Laeufe.
+// 5. Wenn du die Datei produktiv nutzen willst, kannst du sie direkt als .jsonc verwenden,
+//    weil SilentInstallHelper jetzt Kommentare in .jsonc lesen kann.
+// 6. "estimated_duration" ist hier nur fuer interne Fortschrittslogik relevant.
+// 7. "timeout" ist ein echter Sicherheitsabbruch.
+//
+{
+  "title": "SilentInstallHelper SILENT Template",
+  "mode": "SILENT",
+  "theme": "DARK",
+  "progress_color": "#4BA3C7",
+
+  "installer": ".\\readme.md",
+
+  "variables": {
+    "install_args": "/quiet /norestart",
+    "target_dir": "C:\\Temp\\App"
+  },
+
+  "steps": [
+    {
+      "id": "prepare",
+      "label": "Vorbereitung",
+      "command": "cmd /c echo Vorbereiten von {installer_name} && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+    },
+    {
+      "id": "install",
+      "label": "Installation",
+      "command": "cmd /c echo Stille Demo-Installation mit {installer_name} {install_args} && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10,
+      "timeout": 300
+    },
+    {
+      "id": "cleanup",
+      "label": "Cleanup",
+      "command": "cmd /c echo Cleanup in {target_dir} && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+// Beispiel:
+// 1. 7z-Archiv entpacken
+// 2. danach rekursiv Berechtigungen mit icacls setzen
+//
+// Vor dem Einsatz bei Bedarf anpassen:
+// - "installer" auf dein echtes Archiv
+// - "seven_zip_path" auf deine 7za.exe / 7z.exe
+// - "target_dir" auf das Zielverzeichnis
+// - "icacls_identity" und "icacls_rights" auf die gewuenschten Rechte
+//
+{
+  "title": "7z + ICACLS Beispiel",
+  "mode": "BASIC",
+  "theme": "LIGHT",
+  "progress_color": "#1F7AE0",
+
+  "installer": "C:\\TEMP\\7ziptest.7z",
+
+  "variables": {
+    "seven_zip_path": "C:\\TEMP\\7zip-cli\\7za.exe",
+    "target_dir": "C:\\TEMP2",
+    "icacls_identity": "Users",
+    "icacls_rights": "(OI)(CI)RX"
+  },
+
+  "steps": [
+    {
+      "id": "prepare",
+      "label": "Zielordner wird vorbereitet",
+      "command": "powershell -ExecutionPolicy Bypass -Command \"New-Item -ItemType Directory -Force -Path '{target_dir}' | Out-Null\"",
+      "estimated_duration": 2,
+      "timeout": 30
+    },
+    {
+      "id": "extract",
+      "label": "Archiv wird entpackt",
+      "command": "\"{seven_zip_path}\" x \"{installer}\" -o\"{target_dir}\" -y -bb1 -bso1 -bsp1",
+      "output_mode": "7ZIP",
+      "estimated_duration": 1800,
+      "timeout": 10800
+    },
+    {
+      "id": "permissions",
+      "label": "Berechtigungen werden gesetzt",
+      "command": "icacls \"{target_dir}\" /grant \"{icacls_identity}\":{icacls_rights} /T /C",
+      "output_mode": "ICACLS",
+      "estimated_duration": 3600,
+      "timeout": 14400
+    },
+    {
+      "id": "finish",
+      "label": "Vorgang wird abgeschlossen",
+      "command": "cmd /c echo Extraktion und Rechtevergabe abgeschlossen",
+      "estimated_duration": 1,
+      "timeout": 30
+    }
+  ]
+}

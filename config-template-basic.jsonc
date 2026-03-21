@@ -1,0 +1,58 @@
+// Anleitung:
+// 1. Dieses Template ist fuer den BASIC-Modus gedacht.
+// 2. BASIC bedeutet: reduzierte Oberflaeche ohne Schliessen-Button.
+// 3. Passe zuerst "installer" und optional "variables" an.
+// 4. Definiere dann deine Schritte unter "steps".
+// 5. Wenn du die Datei produktiv nutzen willst, speichere sie ohne Kommentare als .json
+//    oder entferne vor dem Einsatz alle Kommentarzeilen.
+// 6. "estimated_duration" steuert nur die weiche Fortschrittsanzeige.
+// 7. "timeout" beendet einen Schritt technisch nach X Sekunden.
+//
+{
+  "title": "SilentInstallHelper BASIC Template",
+  "mode": "BASIC",
+  "theme": "DARK",
+  "progress_color": "#1F7AE0",
+
+  "installer": ".\\readme.md",
+
+  "variables": {
+    "install_args": "/quiet /norestart",
+    "target_dir": "C:\\Temp\\App"
+  },
+
+  "steps": [
+    {
+      "id": "prepare",
+      "label": "Wir bereiten die Installation vor",
+
+      // Feste Variablen:
+      // {installer}
+      // {installer_dir}
+      // {installer_name}
+      // {log_path}
+
+      "command": "cmd /c echo Vorbereiten von {installer_name} && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+    },
+    {
+      "id": "install",
+      "label": "Die Software wird installiert",
+      "command": "cmd /c echo Demo-Installation mit {installer_name} {install_args} && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+
+      // Optional:
+      // "timeout": 900,
+      // "working_directory": "{installer_dir}",
+      // "success_codes": [0],
+      // "optional": false,
+      // "continue_on_error": false
+    },
+    {
+      "id": "cleanup",
+      "label": "Wir raeumen auf",
+      "command": "cmd /c echo Cleanup abgeschlossen && timeout /t 10 /nobreak > nul",
+      "estimated_duration": 10
+    }
+  ]
+}

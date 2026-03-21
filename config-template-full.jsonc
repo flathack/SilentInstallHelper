@@ -1,0 +1,68 @@
+// Anleitung:
+// 1. Dieses Template ist fuer den FULL-Modus gedacht.
+// 2. FULL bedeutet: installer-aehnlicher Ablauf mit Startseite.
+// 3. Passe zuerst "installer" und optional "variables" an.
+// 4. Nutze mehrere Schritte fuer Entpacken, Installieren und Aufraeumen.
+// 5. Wenn du die Datei produktiv nutzen willst, speichere sie ohne Kommentare als .json
+//    oder entferne vor dem Einsatz alle Kommentarzeilen.
+// 6. Feste Platzhalter sind: {installer}, {installer_dir}, {installer_name}, {log_path}
+//    sowie {app_dir} und {seven_zip_exe}.
+// 7. Eigene Platzhalter kommen aus dem Block "variables".
+// 8. "estimated_duration" ist nur fuer den Ladebalken.
+// 9. "timeout" ist ein echter Sicherheitsabbruch.
+// 10. Mit "output_mode": "7ZIP" kann der Installer Live-Status aus 7z-Ausgaben anzeigen.
+// 11. Mit "output_mode": "ICACLS" sind Dateiname und Bearbeitungszaehler fuer Rechte-Aktionen moeglich.
+//
+{
+  "title": "SilentInstallHelper FULL Template",
+  "mode": "FULL",
+  "theme": "DARK",
+  "progress_color": "#4BA3C7",
+
+  "installer": ".\\readme.md",
+
+  "variables": {
+    "extract_dir": "C:\\Temp\\ExtractedSetup",
+    "install_args": "/quiet /norestart",
+    "license_mode": "ACCEPT=YES"
+  },
+
+  "steps": [
+    {
+      "id": "prepare",
+      "label": "Wir bereiten die Installation vor",
+
+      // Beispiele fuer feste Variablen:
+      // "command": "cmd /c echo {installer}",
+      // "command": "cmd /c echo {installer_dir}",
+      // "command": "cmd /c echo {installer_name}",
+      // "command": "cmd /c echo {log_path}",
+
+      "command": "cmd /c echo Vorbereiten von {installer_name} && timeout /t 8 /nobreak > nul",
+      "estimated_duration": 8
+    },
+    {
+      "id": "extract",
+      "label": "Wir entpacken die Installationsdateien",
+      "command": "cmd /c echo Entpacken nach {extract_dir} && timeout /t 7 /nobreak > nul",
+      "estimated_duration": 7,
+      "output_mode": "7ZIP"
+
+      // Beispiel:
+      // "command": "\"{seven_zip_exe}\" x \"{installer}\" -o\"{extract_dir}\" -y -bb1 -bso1 -bsp1"
+    },
+    {
+      "id": "install",
+      "label": "Die Software wird installiert",
+      "command": "cmd /c echo Demo-Installation mit {installer_name} {install_args} {license_mode} && timeout /t 8 /nobreak > nul",
+      "estimated_duration": 8,
+      "timeout": 1800
+    },
+    {
+      "id": "cleanup",
+      "label": "Wir raeumen auf",
+      "command": "cmd /c echo Cleanup in {extract_dir} && timeout /t 7 /nobreak > nul",
+      "estimated_duration": 7
+    }
+  ]
+}

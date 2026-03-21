@@ -1,0 +1,45 @@
+// Anleitung:
+// 1. Diese Demo entpackt ein 7z-Archiv mit externer 7z.exe.
+// 2. Passe bei Bedarf nur "installer", "seven_zip_path" und "target_dir" an.
+// 3. "output_mode": "7ZIP" sorgt fuer Live-Status im Installer.
+// 4. "estimated_duration" ist nur fuer den Ladebalken.
+// 5. "timeout" ist die echte Maximaldauer des Schritts in Sekunden.
+//
+{
+  "title": "7-Zip Extraktion",
+  "mode": "BASIC",
+  "theme": "DARK",
+  "progress_color": "#1F7AE0",
+
+  "installer": "C:\\TEMP\\7ziptest.7z",
+
+  "variables": {
+    "seven_zip_path": "C:\\TEMP\\7zip-cli\\7za.exe",
+    "target_dir": "C:\\TEMP2"
+  },
+
+  "steps": [
+    {
+      "id": "prepare",
+      "label": "Wir bereiten die Extraktion vor",
+      "command": "powershell -ExecutionPolicy Bypass -Command \"New-Item -ItemType Directory -Force -Path '{target_dir}' | Out-Null\"",
+      "estimated_duration": 2,
+      "timeout": 30
+    },
+    {
+      "id": "extract",
+      "label": "Archiv wird entpackt",
+      "command": "\"{seven_zip_path}\" x \"{installer}\" -o\"{target_dir}\" -y -bb1 -bso1 -bsp1",
+      "output_mode": "7ZIP",
+      "estimated_duration": 300,
+      "timeout": 10800
+    },
+    {
+      "id": "finish",
+      "label": "Extraktion wird abgeschlossen",
+      "command": "cmd /c echo Extraktion nach {target_dir} abgeschlossen",
+      "estimated_duration": 1,
+      "timeout": 30
+    }
+  ]
+}

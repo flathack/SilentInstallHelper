@@ -1,0 +1,33 @@
+{
+  "title": "SilentInstallHelper Demo",
+  "mode": "BASIC",
+  "theme": "DARK",
+  "progress_color": "#3AA0FF",
+  "installer": ".\\readme.md",
+  "variables": {
+    "source_iso": "M:\\LINUX-IMAGING\\ubuntu-24.04.2-desktop-amd64.iso",
+    "target_dir": "C:\\temp",
+    "install_args": "/quiet /norestart"
+  },
+  "steps": [
+    {
+      "id": "prepare",
+      "label": "Wir bereiten die Installation vor",
+      "command": "cmd /c copy {source_iso} {target_dir}\\",
+      "estimated_duration": 2
+    },
+    {
+      "id": "install",
+      "label": "Die Software wird installiert",
+      "command": "cmd /c echo Installation mit {install_args} && timeout 20",
+      "timeout": 10,
+      "estimated_duration": 5
+    },
+    {
+      "id": "cleanup",
+      "label": "Wir raeumen auf",
+      "command": "cmd /c echo Aufraeumen abgeschlossen && timeout /t 1 /nobreak > nul",
+      "estimated_duration": 1
+    }
+  ]
+}
